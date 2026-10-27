@@ -1,6 +1,9 @@
 package blaermanor;
 
 import org.junit.jupiter.api.Test;
+import blaermanor.puzzles.CodePuzzle;
+import blaermanor.puzzles.ItemPuzzle;
+import blaermanor.puzzles.Puzzle;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -85,4 +88,63 @@ class PlayerTest {
         assertTrue(player.getInventory().hasItem(note));
         assertTrue(player.getInventory().hasItem(key));
     }
+
+
+    @Test
+    void testPlayerSolvesCodePuzzle() {
+        Room study = new Room("Study", "An old study");
+        Player player = new Player("Explorer", study);
+
+        Puzzle safe = new CodePuzzle(
+                "Locked Safe",
+                "Enter the four-digit code",
+                "1847"
+        );
+
+        study.addPuzzle(safe);
+
+        assertTrue(player.solvePuzzle(safe, "1847"));
+        assertTrue(safe.isSolved());
+    }
+
+    @Test
+    void testPlayerSolvesItemPuzzle() {
+        Room library = new Room("Library", "Old books");
+        Player player = new Player("Explorer", library);
+
+        Item key = new Item("Brass Key", "An old key");
+        library.addItem(key);
+
+        Puzzle desk = new ItemPuzzle(
+                "Locked Desk",
+                "Requires a brass key",
+                key
+        );
+
+        library.addPuzzle(desk);
+
+        assertTrue(player.pickUpItem(key));
+        assertTrue(player.solvePuzzle(desk, ""));
+        assertTrue(desk.isSolved());
+    }
+
+    @Test
+    void testCannotSolvePuzzleInDifferentRoom() {
+        Room foyer = new Room("Foyer", "The entrance");
+        Room study = new Room("Study", "An old study");
+
+        Player player = new Player("Explorer", foyer);
+
+        Puzzle safe = new CodePuzzle(
+                "Locked Safe",
+                "Enter the code",
+                "1847"
+        );
+
+        study.addPuzzle(safe);
+
+        assertFalse(player.solvePuzzle(safe, "1847"));
+        assertFalse(safe.isSolved());
+    }
+
 }

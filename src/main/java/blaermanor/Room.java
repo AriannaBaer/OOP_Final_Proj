@@ -2,18 +2,21 @@ package blaermanor;
 
 import java.util.ArrayList;
 import java.util.List;
+import blaermanor.puzzles.Puzzle;
 
 public class Room {
     private final String name;
     private final String description;
     private final List<Room> neighbors;
     private final List<Item> items;
+    private final List<Puzzle> puzzles;
 
     public Room(String name, String description) {
         this.name = name;
         this.description = description;
         this.neighbors = new ArrayList<>();
         this.items = new ArrayList<>();
+        this.puzzles = new ArrayList<>();
     }
 
     public String getName() {
@@ -62,4 +65,17 @@ public class Room {
     public String toString() {
         return name + ": " + description;
     }
+
+    public void addPuzzle(Puzzle puzzle) {
+        puzzles.add(puzzle);
+    }
+
+    public boolean hasPuzzle(Puzzle puzzle) {
+        return puzzles.contains(puzzle);
+    }
+
+    public List<Puzzle> getPuzzles() {
+        return new ArrayList<>(puzzles);
+    }
+
 }

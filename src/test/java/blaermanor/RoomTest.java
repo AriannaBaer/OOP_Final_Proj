@@ -1,6 +1,8 @@
 package blaermanor;
 
 import org.junit.jupiter.api.Test;
+import blaermanor.puzzles.CodePuzzle;
+import blaermanor.puzzles.Puzzle;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -80,5 +82,22 @@ class RoomTest {
         assertTrue(foyer.isConnectedTo(library));
         assertTrue(foyer.getItems().contains(note));
     }
+
+    @Test
+    void testRoomContainsPuzzle() {
+        Room study = new Room("Study", "A mysterious study");
+
+        Puzzle safe = new CodePuzzle(
+                "Locked Safe",
+                "A safe requiring a four-digit code",
+                "1847"
+        );
+
+        study.addPuzzle(safe);
+
+        assertTrue(study.hasPuzzle(safe));
+        assertEquals(1, study.getPuzzles().size());
+    }
+
 }
 
